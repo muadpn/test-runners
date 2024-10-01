@@ -1,101 +1,101 @@
+"use client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Home() {
+  const [url, SetUrl] = useState("");
+  const [bodies, setBodies] = useState<any>();
+  const [getResponded, setGetResponded] = useState<any>();
+  const [postResponded, setPostResponded] = useState<any>();
+  async function getDataFromPost() {
+    try {
+      let dataBody = JSON.stringify(bodies);
+      JSON.parse(dataBody);
+    } catch (error) {
+      toast.error("Please enter a valid JSON");
+      return;
+    }
+    try {
+      const data = await fetch("/api/am-i-blocked", {
+        method: "POST",
+        body: JSON.stringify({
+          url: url,
+          body: bodies,
+        }),
+      });
+      let dataBody = await data.json();
+      setPostResponded(JSON.stringify(dataBody));
+    } catch (error) {
+      toast.error(JSON.stringify(error));
+      setPostResponded(JSON.stringify({ message: "Something went wrong" }));
+    }
+  }
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="">
+      <div className="w-full flex items-center justify-center flex-col ">
+        <div className="my-8">
+          <h1>Hey Call this!!</h1>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="grid grid-cols-2 gap-2 rounded-2xl max-w-7xl mx-auto  w-full   ">
+          <div className="flex w-full items-center  flex-col ">
+            <div className="border w-full h-96  my-2 rounded-2xl p-4  ">
+              <h3>Response </h3>
+              <span className="text-red-600">Not Implimented YET!</span>
+            </div>
+            <div className="w-full border p-4 rounded-2xl ">
+              <div className="my-4 w-full max-w-sm">
+                <label htmlFor="url-id">Url</label>
+                <Input
+                  id="url-id"
+                  name="url"
+                  placeholder="Enter the URL"
+                  onChange={(e) => SetUrl(e.target.value)}
+                />
+              </div>
+              <Button>GET DATA FROM GET</Button>
+            </div>
+          </div>
+          <div className="flex w-full items-center justify-between flex-col ">
+            <div className="border  w-full max-h-96 h-96 overflow-scroll   my-2 rounded-2xl p-4 scrollbar-w-2 scrollbar-thumb-rounded scrollbar-track-primary ">
+              <h3 className="mb-2 text-green-600">Response from POST</h3>
+              <div className="prose-slate">
+                <code className="">{postResponded}</code>
+              </div>
+            </div>
+            <div className="w-full border p-4 rounded-2xl">
+              <div className="my-4 w-full max-w-sm">
+                <div className="my-4">
+                  <label htmlFor="url-id">Url</label>
+                  <Input
+                    id="url-id"
+                    name="url"
+                    placeholder="Enter the URL"
+                    onChange={(e) => SetUrl(e.target.value)}
+                    value={url}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="body-id">JSON</label>
+                  <Textarea
+                    id="body-id"
+                    name="body"
+                    placeholder="Enter the body"
+                    onChange={(e) => setBodies(e.target.value)}
+                    value={bodies}
+                  />
+                </div>
+              </div>
+              <Button onClick={() => getDataFromPost()}>
+                GET DATA FROM GET
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
